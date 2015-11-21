@@ -8,8 +8,6 @@ public class AndroidProfileDB implements IProfileDB {
   
       }
 
-     
-   
    
     @Override
     public TempStruct getprofile(String index){
@@ -18,14 +16,6 @@ public class AndroidProfileDB implements IProfileDB {
        return null;
     }
 
-
-
-
-	@Override
-	public void setprofile(String newIndex, TempStruct newProfileValue) {
-		// TODO Auto-generated method stub
-		
-	} 
 
 
 }
