@@ -6,6 +6,10 @@ public class SensorFactory {
 	public static void initializeSensingFramework(String simualtedSensor) {
 		if (simualtedSensor.equals("BadgeReader"))
 			new SimulatedBadgeReader();
+		
+		if (simualtedSensor.equals("Heater"))
+			new SimulatedHeater();
+		
 
 		
 
