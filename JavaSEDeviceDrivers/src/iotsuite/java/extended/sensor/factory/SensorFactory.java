@@ -9,8 +9,9 @@ public class SensorFactory {
 		
 		if (simualtedSensor.equals("Heater"))
 			new SimulatedHeater();
-		
 
+		if (simualtedSensor.equals("TemperatureSensor"))
+			new SimulatedTemperatureSensor();
 		
 
 		// Keep Adding additional simulated Sensor Name here as you add

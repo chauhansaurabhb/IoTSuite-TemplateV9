@@ -8,9 +8,10 @@ public class SensorFactory {
 			new SimulatedBadgeReader();
 		
 		if (simualtedSensor.equals("Heater"))
-			new SimulatedHeater();
-		
+			new SimulatedHeater();		
 
+		if (simualtedSensor.equals("TemperatureSensor"))
+			new SimulatedTemperatureSensor();
 		
 
 		// Keep Adding additional simulated Sensor Name here as you add
