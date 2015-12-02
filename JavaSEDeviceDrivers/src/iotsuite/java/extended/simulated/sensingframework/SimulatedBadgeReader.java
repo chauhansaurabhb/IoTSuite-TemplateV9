@@ -1,4 +1,4 @@
-package iotsuite.java.extended.sensingframework;
+package iotsuite.java.extended.simulated.sensingframework;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;

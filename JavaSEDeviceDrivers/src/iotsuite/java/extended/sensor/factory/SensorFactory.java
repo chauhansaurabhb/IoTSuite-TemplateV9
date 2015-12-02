@@ -1,6 +1,7 @@
 package iotsuite.java.extended.sensor.factory;
 
-import iotsuite.java.extended.sensingframework.*;
+import iotsuite.java.extended.simulated.actuatingframework.SimulatedHeater;
+import iotsuite.java.extended.simulated.sensingframework.*;
 
 public class SensorFactory {
 	public static void initializeSensingFramework(String simualtedSensor) {
@@ -14,7 +15,7 @@ public class SensorFactory {
 			new SimulatedTemperatureSensor();
 		
 
-		// Keep Adding additional simulated Sensor Name here as you add
+		// Keep Adding additional simulated Sensor/Actuator Name here as you add
 		// into
 		// package iotsuite.java.extended.sensingframework package
 

@@ -1,4 +1,4 @@
-package iotsuite.java.extended.sensingframework;
+package iotsuite.java.extended.simulated.actuatingframework;
 
 import iotsuite.localmiddleware.IDataListener;
 import iotsuite.localmiddleware.PubSubsSensingFramework;

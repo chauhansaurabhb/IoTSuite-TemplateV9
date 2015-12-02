@@ -1,6 +1,7 @@
 package iotsuite.java.extended.sensor.factory;
 
-import iotsuite.java.extended.sensingframework.*;
+import iotsuite.java.extended.simulated.actuatingframework.SimulatedHeater;
+import iotsuite.java.extended.simulated.sensingframework.*;
 
 public class SensorFactory {
 	public static void initializeSensingFramework(String simualtedSensor) {
@@ -8,7 +9,7 @@ public class SensorFactory {
 			new SimulatedBadgeReader();
 		
 		if (simualtedSensor.equals("Heater"))
-			new SimulatedHeater();		
+			new SimulatedHeater();
 
 		if (simualtedSensor.equals("TemperatureSensor"))
 			new SimulatedTemperatureSensor();

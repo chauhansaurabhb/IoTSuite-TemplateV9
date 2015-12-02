@@ -1,4 +1,4 @@
-package iotsuite.java.extended.sensingframework;
+package iotsuite.java.extended.simulated.sensingframework;
 
 import iotsuite.localmiddleware.IDataListener;
 import iotsuite.localmiddleware.PubSubsSensingFramework;
@@ -22,16 +22,6 @@ public class SimulatedTemperatureSensor implements IDataListener {
 		pubSubSensingFramework.registerForSensorData(this, "TemperatureSensor-Parameter");
 		pubSubSensingFramework.registerForSensorData(this, "startPeriodicTemperatureSensorSampling");
 
-		
-		/*while (temp <= SAMPLE_DURATION) {
-			try {
-				gettempMeasurement();
-				Thread.sleep(SAMPLE_PERIOD);
-				temp = temp + SAMPLE_PERIOD;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}*/
 	}
 	private static double showRandomInteger(int aStart, int aEnd, Random aRandom) {
 		if (aStart > aEnd) {
@@ -51,7 +41,7 @@ public class SimulatedTemperatureSensor implements IDataListener {
 		 tempValue = showRandomInteger(START, END, random);
 		 	JsonObject publishData = new JsonObject();
 			publishData.addProperty("tempValue", tempValue);
-			publishData.addProperty("unitOfMeasurement", "C");
+			publishData.addProperty("unitOfMeasurement", "'C'");
 			pubSubSensingFramework.publish("TemperatureSensor-Result", publishData);
 		
 	}
