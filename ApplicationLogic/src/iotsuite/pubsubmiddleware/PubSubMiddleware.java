@@ -1,19 +1,14 @@
 package iotsuite.pubsubmiddleware;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import iotsuite.common.RegionIDTables;
-import iotsuite.semanticmodel.Device;
 
 public class PubSubMiddleware {
 
@@ -22,25 +17,25 @@ public class PubSubMiddleware {
 
 	private Map<String, Set<Subscriber>> subscriberMap = new Hashtable<String, Set<Subscriber>>();
 
-	private Map<List<String>, Set<Subscriber>> regionSubscriber = new Hashtable<List<String>, Set<Subscriber>>();
+	//private Map<List<String>, Set<Subscriber>> regionSubscriber = new Hashtable<List<String>, Set<Subscriber>>();
 
 	private Set<Subscriber> subscriberSet = Collections
 			.synchronizedSet(new HashSet<Subscriber>());
-
+/*
 	private List<String> pubSubRegionIDList = new ArrayList<String>();
 
 	RegionIDTables regionIDtb = new RegionIDTables();
 
 	static PubSubMiddleware singletonInstance;
-
-	public static PubSubMiddleware getInstance(Device device, Object context) {
+*/
+	/*public static PubSubMiddleware getInstance(Device device, Object context) {
 
 		if (singletonInstance == null) {
 			singletonInstance = new PubSubMiddleware(device.getType(),
 					device.getName(), context);
 		}
 		return singletonInstance;
-	}
+	}*/
 
 	public PubSubMiddleware(String type, String name, Object context) {
 
@@ -54,18 +49,18 @@ public class PubSubMiddleware {
 	 * gets data from hardware sensor or other software component.
 	 */
 
-	public void publish(String topicName, Object arg, Device deviceInfo) {
+	public void publish(String topicName, Object arg) {
 
-		DataWrapper dw = new DataWrapper();
+		/*DataWrapper dw = new DataWrapper();
 		dw.setObject(arg);
 		dw.setDevice(deviceInfo);
-
+*/
 		java.io.ByteArrayOutputStream bstream = new java.io.ByteArrayOutputStream();
 		java.io.ObjectOutputStream st;
 
 		try {
 			st = new java.io.ObjectOutputStream(bstream);
-			st.writeObject(dw);
+			st.writeObject(arg);
 			st.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -73,8 +68,10 @@ public class PubSubMiddleware {
 		}
 
 		byte[] bytes = bstream.toByteArray();
+		
 
 		try {
+			bytes = new String(bytes, "UTF-8").substring(7).getBytes();
 			pub.publish(topicName, 0, bytes);
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
@@ -89,9 +86,8 @@ public class PubSubMiddleware {
 	 * topicName : The eventName in which a component is in interest.
 	 */
 
-	public void subscribe(Subscriber s, String topicName,
-			List<String> regionInfo) {
-		registerNewSubscriber(s, topicName, regionInfo);
+	public void subscribe(Subscriber s, String topicName) {
+		registerNewSubscriber(s, topicName);
 
 		try {
 			sub.subscribe(topicName);
@@ -107,10 +103,9 @@ public class PubSubMiddleware {
 		return subscriberMap.get(eventName);
 	}
 
-	private void registerNewSubscriber(Subscriber s, String eSig,
-			List<String> regionInfo) {
+	private void registerNewSubscriber(Subscriber s, String eSig) {
 
-		if (regionSubscriber.containsKey(regionInfo)) {
+		/*if (regionSubscriber.containsKey(regionInfo)) {
 			Set<Subscriber> tempSet = regionSubscriber.get(regionInfo);
 			tempSet.add(s);
 			regionSubscriber.put(regionInfo, tempSet);
@@ -121,7 +116,7 @@ public class PubSubMiddleware {
 			newSet.add(s);
 			regionSubscriber.put(regionInfo, newSet);
 		}
-
+*/
 		// create Map by EventName
 
 		if (subscriberMap.containsKey(eSig)) {
@@ -138,12 +133,12 @@ public class PubSubMiddleware {
 
 	public void receiveEvent(String forTopic, MqttMessage event)
 			throws MqttException {
-		Object obj = null;
+		//Object obj = null;
 
 		log("receiveEvent(forTopic = %s, event = %s)", forTopic, event
 				.getPayload().getClass().getName());
 
-		java.io.ByteArrayInputStream bstream = new java.io.ByteArrayInputStream(
+		/*java.io.ByteArrayInputStream bstream = new java.io.ByteArrayInputStream(
 				event.getPayload());
 		try {
 			java.io.ObjectInputStream st = new java.io.ObjectInputStream(
@@ -158,9 +153,9 @@ public class PubSubMiddleware {
 			e.printStackTrace();
 		}
 
-		DataWrapper dt = (DataWrapper) obj;
+		DataWrapper dt = (DataWrapper) obj;*/
 
-		Set<Subscriber> subscriberPatternSet = new HashSet<Subscriber>();
+		/*Set<Subscriber> subscriberPatternSet = new HashSet<Subscriber>();
 
 		pubSubRegionIDList = dt.getDevice().getRegion();
 
@@ -175,16 +170,16 @@ public class PubSubMiddleware {
 				subscriberPatternSet.addAll(s);
 			}
 
-		}
+		}*/
 
 		Set<Subscriber> subscriberEventSet = getSubscribersForEvent(forTopic);
-
+/*
 		subscriberSet = SetOperations.intersection(subscriberEventSet,
 				subscriberPatternSet);
-
+*/
 		if (subscriberSet != null) {
-			for (Subscriber s : subscriberSet) {
-				s.notifyReceived(forTopic, dt.getObject(), dt.getDevice());
+			for (Subscriber s : subscriberEventSet) {
+				s.notifyReceived(forTopic,event);
 			}
 		}
 
