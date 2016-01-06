@@ -15,6 +15,7 @@ import java.util.Set;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.StrictMode;
@@ -46,12 +47,13 @@ public class PubSubMiddleware {
 		return singletonInstance;
 	}
 
+	@SuppressLint("NewApi")
 	public PubSubMiddleware(String type, String name, Context context) {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 				.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 
-		pub = new MQTTPublisher();
+		pub = new MQTTPublisher(); 
 		sub = new MQTTSubscriber(this);
 
 	}
@@ -61,18 +63,18 @@ public class PubSubMiddleware {
 	 * gets data from hardware sensor or other software component.
 	 */
 
-	public void publish(String topicName, Object arg, Device deviceInfo) {
+	public void publish(String topicName, Object arg) {
 
-		DataWrapper dw = new DataWrapper();
+		/*DataWrapper dw = new DataWrapper();
 		dw.setObject(arg);
-		dw.setDevice(deviceInfo);
+		dw.setDevice(deviceInfo);*/
 
 		java.io.ByteArrayOutputStream bstream = new java.io.ByteArrayOutputStream();
 		java.io.ObjectOutputStream st;
 
 		try {
 			st = new java.io.ObjectOutputStream(bstream);
-			st.writeObject(dw);
+			st.writeObject(arg);
 			st.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -96,9 +98,8 @@ public class PubSubMiddleware {
 	 * topicName : The eventName in which a component is in interest.
 	 */
 
-	public void subscribe(Subscriber s, String topicName,
-			List<String> regionInfo) {
-		registerNewSubscriber(s, topicName, regionInfo);
+	public void subscribe(Subscriber s, String topicName) {
+		registerNewSubscriber(s, topicName);
 
 		try {
 			sub.subscribe(topicName);
@@ -114,10 +115,9 @@ public class PubSubMiddleware {
 		return subscriberMap.get(eventName);
 	}
 
-	private void registerNewSubscriber(Subscriber s, String eSig,
-			List<String> regionInfo) {
+	private void registerNewSubscriber(Subscriber s, String eSig) {
 
-		if (regionSubscriber.containsKey(regionInfo)) {
+	/*	if (regionSubscriber.containsKey(regionInfo)) {
 			Set<Subscriber> tempSet = regionSubscriber.get(regionInfo);
 			tempSet.add(s);
 			regionSubscriber.put(regionInfo, tempSet);
@@ -127,7 +127,7 @@ public class PubSubMiddleware {
 			Set<Subscriber> newSet = new HashSet<Subscriber>();
 			newSet.add(s);
 			regionSubscriber.put(regionInfo, newSet);
-		}
+		}*/
 
 		// create Map by EventName
 
@@ -191,7 +191,7 @@ public class PubSubMiddleware {
 
 		if (subscriberSet != null) {
 			for (Subscriber s : subscriberSet) {
-				s.notifyReceived(forTopic, dt.getObject(), dt.getDevice());
+				s.notifyReceived(forTopic, dt.getObject());
 			}
 		}
 

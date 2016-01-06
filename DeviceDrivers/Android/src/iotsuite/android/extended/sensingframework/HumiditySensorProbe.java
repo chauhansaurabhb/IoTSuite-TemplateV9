@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 
 import edu.mit.media.funf.time.TimeUtil;
 
-public class BadgeReaderSensorProbe extends Service implements
+public class HumiditySensorProbe extends Service implements
 		SensorEventListener, ProximitySensorKeys, BadgeReaderKeys {
 
 	private SensorManager mSensorManager;
