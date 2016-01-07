@@ -1,14 +1,9 @@
 package iotsuite.pubsubmiddleware;
 
-import iotsuite.common.RegionIDTables;
-import iotsuite.semanticmodel.Device;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,7 +11,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.StrictMode;
 
@@ -27,11 +21,11 @@ public class PubSubMiddleware {
 
 	private Map<String, Set<Subscriber>> subscriberMap = new Hashtable<String, Set<Subscriber>>();
 
-	private Map<List<String>, Set<Subscriber>> regionSubscriber = new Hashtable<List<String>, Set<Subscriber>>();
+	//private Map<List<String>, Set<Subscriber>> regionSubscriber = new Hashtable<List<String>, Set<Subscriber>>();
 
 	private Set<Subscriber> subscriberSet = Collections
 			.synchronizedSet(new HashSet<Subscriber>());
-
+/*
 	private List<String> pubSubRegionIDList = new ArrayList<String>();
 
 	RegionIDTables regionIDtb = new RegionIDTables();
@@ -46,7 +40,7 @@ public class PubSubMiddleware {
 		}
 		return singletonInstance;
 	}
-
+*/ 
 	@SuppressLint("NewApi")
 	public PubSubMiddleware(String type, String name, Context context) {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -55,7 +49,7 @@ public class PubSubMiddleware {
 
 		pub = new MQTTPublisher();
 		sub = new MQTTSubscriber(this);
-
+ 
 
 	}
 
@@ -65,11 +59,11 @@ public class PubSubMiddleware {
 	 */
 
 	public void publish(String topicName, Object arg) {
-/*
-		DataWrapper dw = new DataWrapper();
-		dw.setObject(arg);
-		dw.setDevice(deviceInfo);*/
 
+		/*DataWrapper dw = new DataWrapper();
+		dw.setObject(arg);
+		dw.setDevice(deviceInfo);
+*/
 		java.io.ByteArrayOutputStream bstream = new java.io.ByteArrayOutputStream();
 		java.io.ObjectOutputStream st;
 
@@ -85,6 +79,7 @@ public class PubSubMiddleware {
 		byte[] bytes = bstream.toByteArray();
 
 		try {
+			bytes = new String(bytes, "UTF-8").substring(7).getBytes();
 			pub.publish(topicName, 0, bytes);
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
@@ -118,7 +113,7 @@ public class PubSubMiddleware {
 
 	private void registerNewSubscriber(Subscriber s, String eSig) {
 
-	/*	if (regionSubscriber.containsKey(regionInfo)) {
+		/*if (regionSubscriber.containsKey(regionInfo)) {
 			Set<Subscriber> tempSet = regionSubscriber.get(regionInfo);
 			tempSet.add(s);
 			regionSubscriber.put(regionInfo, tempSet);
@@ -128,9 +123,9 @@ public class PubSubMiddleware {
 			Set<Subscriber> newSet = new HashSet<Subscriber>();
 			newSet.add(s);
 			regionSubscriber.put(regionInfo, newSet);
-		}*/
+		}
 
-		// create Map by EventName
+*/		// create Map by EventName
 
 		if (subscriberMap.containsKey(eSig)) {
 
@@ -151,7 +146,7 @@ public class PubSubMiddleware {
 		log("receiveEvent(forTopic = %s, event = %s)", forTopic, event
 				.getPayload().getClass().getName());
 
-		java.io.ByteArrayInputStream bstream = new java.io.ByteArrayInputStream(
+		/*java.io.ByteArrayInputStream bstream = new java.io.ByteArrayInputStream(
 				event.getPayload());
 		try {
 			java.io.ObjectInputStream st = new java.io.ObjectInputStream(
@@ -184,15 +179,15 @@ public class PubSubMiddleware {
 			}
 
 		}
-
+*/
 		Set<Subscriber> subscriberEventSet = getSubscribersForEvent(forTopic);
 
-		subscriberSet = SetOperations.intersection(subscriberEventSet,
+		/*subscriberSet = SetOperations.intersection(subscriberEventSet,
 				subscriberPatternSet);
-
+*/
 		if (subscriberSet != null) {
-			for (Subscriber s : subscriberSet) {
-				s.notifyReceived(forTopic, dt.getObject());
+			for (Subscriber s : subscriberEventSet) {
+				s.notifyReceived(forTopic,event);
 			}
 		}
 

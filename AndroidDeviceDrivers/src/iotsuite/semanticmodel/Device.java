@@ -3,9 +3,7 @@ package iotsuite.semanticmodel;
 import iotsuite.common.GlobalVariable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Device implements Serializable {
@@ -13,48 +11,51 @@ public class Device implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	// private String id;
+     //private String id;
 	private String type;
-	private String networkAddress;
+	//private String networkAddress;
 
-	private List<String> regionIDs = new ArrayList<String>();
-	private List<String> regionLabels = new ArrayList<String>();
-
+	//private List<String> regionIDs = new ArrayList<String>();
+  //private List<String> regionLabels = new ArrayList<String>();
 	private Set<String> abilities = new HashSet<String>();
-
-	private String myMobileFlag;
-
+	//private String myMobileFlag;
 	private String myProtocol;
 	private String myDescription;
 	private String myDatabase;
 
-	public Device(String name, String type, String networkAddress,
+	/*public Device(String name, String type, String networkAddress,
 			List<String> regionIDs, List<String> regionLabels,
-			Set<String> abilities, String mobileFlag, String protocol,String deviceDescription,String database) {
-
+			Set<String> abilities, String mobileFlag, String protocol,
+			String deviceDescription, String database) */
+	
+	
+	public Device(String name, String type,
+			Set<String> abilities,  String protocol,
+			String deviceDescription, String database) {
 		this.name = name;
 
 		this.type = type;
-		this.networkAddress = networkAddress;
+		/*this.networkAddress = networkAddress;
 		this.regionIDs = regionIDs;
-		this.regionLabels = regionLabels;
+		this.regionLabels = regionLabels;*/
 		this.abilities = abilities;
-		this.myMobileFlag = mobileFlag;
+		//this.myMobileFlag = mobileFlag;
 		this.myProtocol = protocol;
 		this.myDescription = deviceDescription;
-		this.myDatabase=database;
+		this.myDatabase = database;
 
 	}
-	public String getDescription(){
+
+	public String getDescription() {
 		return myDescription;
 	}
-
 
 	public String getProtocol() {
 		return myProtocol;
 	}
-	public String getDatabase(){
-		
+
+	public String getDatabase() {
+
 		return myDatabase;
 	}
 
@@ -66,7 +67,7 @@ public class Device implements Serializable {
 		return type;
 	}
 
-	public String getNetworkAddress() {
+	/*public String getNetworkAddress() {
 		return networkAddress;
 	}
 
@@ -80,15 +81,15 @@ public class Device implements Serializable {
 
 		// System.out.println("Value of region is"+regionIDs+"In Device.java file");
 		return regionIDs;
-	}
+	}*/
 
 	public Set<String> getAbilities() {
 		return abilities;
 	}
 
-	public String getMobileFlag() {
+	/*public String getMobileFlag() {
 		return myMobileFlag;
-	}
+	}*/
 
 	private String packageName;
 
